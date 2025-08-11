@@ -1,0 +1,74 @@
+---
+alwaysApply: true
+---
+1. User Experience
+Users land on the game URL and start playing instantly — no waiting screens.
+
+The game loads fullscreen or centered on the page with minimal distractions.
+
+A minimal header shows the game logo/name and optionally a “How to Play” tooltip/modal.
+
+Matchmaking pairs users immediately with the first available opponent (FIFO queue).
+
+If no opponent is found within a set timeout, user may wait or play against a simple AI bot.
+
+After each match, users see a win/lose screen with a “Play Again” button and optional signup prompt.
+
+Signup is optional and collects email + username for saving stats and updates.
+
+2. Core Gameplay
+Side-view, 1v1 soccer game with big-headed characters (Sports Heads style).
+
+Controls: arrow keys for movement, plus jump and kick buttons.
+
+Matches have a timer and a visible scoreboard.
+
+Simple sound effects and animations enhance gameplay feedback.
+
+3. Matchmaking
+Simple FIFO queue without skill-based matching.
+
+Immediate pairing with first available player or fallback AI bot if none available.
+
+4. User Accounts (Future-ready)
+Guest mode enabled; no signup required to play.
+
+Signup modal offered after matches or via header button.
+
+Registered accounts save match stats (wins, losses).
+
+Email integration supports newsletters and game updates.
+
+5. UI Elements
+Minimal header with logo and signup button.
+
+Popup signup form for email + username.
+
+Post-match results screen with replay option and signup prompt.
+
+6. Tech Stack Overview
+Frontend: Phaser.js or PixiJS for rendering; Vanilla JS or React for UI; Socket.IO or Colyseus for WebSocket multiplayer.
+
+Backend: Node.js server with WebSocket support; matchmaking queue in memory or Redis; server-authoritative game loop.
+
+Database: PostgreSQL or MongoDB for accounts and stats; Redis for session cache and matchmaking queue.
+
+7. Development Milestones
+Phase 1: Build local 1v1 gameplay or simple bot fallback; basic UI with “Play Now.”
+
+Phase 2: Add online multiplayer matchmaking via WebSocket; server sync logic; scoreboard and timer.
+
+Phase 3: Add signup popup; develop smarter AI bot; save stats; setup email campaigns.
+
+Phase 4: Polish UI for mobile; add sounds, animations, cosmetics; improve anti-cheat.
+
+8. Additional Guidelines
+Keep onboarding simple; no forced signup before play.
+
+Matchmaking is purely FIFO; no skill tiers.
+
+Email signup strictly opt-in and after gameplay.
+
+Optimize for fast game start (<10 seconds from URL load).
+
+Prioritize multiplayer smoothness over graphic complexity.
