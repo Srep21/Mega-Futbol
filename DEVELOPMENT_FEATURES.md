@@ -4,9 +4,9 @@
 
 ### **Feature 1: Project Setup & Structure**
 - [x] Initialize React + Vite + Phaser.js project
-- [ ] Set up Tailwind CSS
-- [ ] Create basic folder structure
-- [ ] Configure build tools and dev server
+- [x] Set up Tailwind CSS
+- [x] Create basic folder structure
+- [x] Configure build tools and dev server
 
 ### **Feature 2: Basic Game Canvas**
 - [ ] Create Phaser.js game instance
