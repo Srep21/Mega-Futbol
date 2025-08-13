@@ -3,7 +3,7 @@
 ## **Phase 1: Foundation & Local Gameplay**
 
 ### **Feature 1: Project Setup & Structure**
-- [ ] Initialize React + Vite + Phaser.js project
+- [x] Initialize React + Vite + Phaser.js project
 - [ ] Set up Tailwind CSS
 - [ ] Create basic folder structure
 - [ ] Configure build tools and dev server
