@@ -32,14 +32,14 @@ export default function GameCanvas() {
                         fontSize: '24px'
                     });
                     
-                    // Create player at center of field
-                    this.player = this.add.circle(400, 200, 20, 0x3b82f6);
+                    // Create player (simple blue circle)
+                    this.player = this.add.circle(400, 360, 20, 0x3b82f6);
                     this.physics.add.existing(this.player);
                     this.player.body.setBounce(0);
                     this.player.body.setCollideWorldBounds(true);
 
                     // Create soccer ball
-                    this.ball = this.add.circle(500, 200, 15, 0xff6600); // Orange ball, smaller than player
+                    this.ball = this.add.circle(500, 365, 15, 0xff6600); // Same level as player, orange ball, smaller than player
                     this.physics.add.existing(this.ball);
                     this.ball.body.setBounce(0.7); // Ball bounces more than player
                     this.ball.body.setCollideWorldBounds(true);
@@ -90,48 +90,47 @@ export default function GameCanvas() {
                         this.player.body.setVelocityY(-500);
                     }
 
-                    // Kicking - press SPACE to kick the ball
-                    if (this.cursors.space.isDown) {
-                        // Check if ball is close to player
+                    // Kicking - press SPACE to swing foot and kick ball
+                    if (this.cursors.space.isDown && !this.isKicking) {
+                        this.isKicking = true;
+                        
+                        // Animate foot swing forward
+                        this.tweens.add({
+                            targets: this.playerFoot,
+                            x: 15, // Swing foot forward
+                            duration: 150,
+                            yoyo: true, // Swing back
+                            onComplete: () => {
+                                this.isKicking = false;
+                            }
+                        });
+                        
+                        // Check if ball is close during kick
                         let distance = Phaser.Math.Distance.Between(this.player.x, this.player.y, this.ball.x, this.ball.y);
-                        if (distance < 50) {
-                            // Calculate kick direction (from player to ball)
-                            let kickX = (this.ball.x - this.player.x) * 10;
-                            let kickY = (this.ball.y - this.player.y) * 10;
-
-                            // Kick the ball!
+                        if (distance < 60) {
+                            // Kick the ball with more power
+                            let kickX = (this.ball.x - this.player.x) * 15;
+                            let kickY = (this.ball.y - this.player.y) * 15 - 200; // Add upward force
                             this.ball.body.setVelocity(kickX, kickY);
                         }
                     }
 
                     // Debug: Show ball position only when near goals
                     // Debug: Show ball position only when near goals
-                    if (this.ball.x < 50 || this.ball.x > 750) {
-                        console.log("Ball near goal! Position:", this.ball.x.toFixed(0), this.ball.y.toFixed(0));
+                    // Goal detection - Left goal
+                    if (this.ball.x < 50 && this.ball.y > 180 && this.ball.y < 400) {
+                        this.rightScore++;
+                        this.scoreText.setText(`Score: ${this.leftScore} - ${this.rightScore}`);
+                        this.ball.setPosition(400, 200);
+                        this.ball.body.setVelocity(0, 0);
                     }
 
-                    // Goal detection - Left goal (expanded Y range)
-                    if (this.ball.x < 50) {
-                        console.log("Ball in LEFT goal area! Y =", this.ball.y.toFixed(0));
-                        if (this.ball.y > 180 && this.ball.y < 400) {  // Much wider Y range
-                            this.rightScore++;
-                            this.scoreText.setText(`Score: ${this.leftScore} - ${this.rightScore}`);
-                            console.log("GOAL! Right player scores!");
-                            this.ball.setPosition(400, 200);
-                            this.ball.body.setVelocity(0, 0);
-                        }
-                    }
-
-                    // Goal detection - Right goal (expanded Y range)
-                    if (this.ball.x > 750) {
-                        console.log("Ball in RIGHT goal area! Y =", this.ball.y.toFixed(0));
-                        if (this.ball.y > 180 && this.ball.y < 400) {  // Much wider Y range
-                            this.leftScore++;
-                            this.scoreText.setText(`Score: ${this.leftScore} - ${this.rightScore}`);
-                            console.log("GOAL! Left player scores!");
-                            this.ball.setPosition(400, 200);
-                            this.ball.body.setVelocity(0, 0);
-                        }
+                    // Goal detection - Right goal  
+                    if (this.ball.x > 750 && this.ball.y > 180 && this.ball.y < 400) {
+                        this.leftScore++;
+                        this.scoreText.setText(`Score: ${this.leftScore} - ${this.rightScore}`);
+                        this.ball.setPosition(400, 200);
+                        this.ball.body.setVelocity(0, 0);
                     }
                 }
             }
