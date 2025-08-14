@@ -32,7 +32,34 @@
 - [X] Player 2 controls (WASD + Q key)
 - [X] Basic score display
 - [X] 2-player local multiplayer gameplay
-- [ ] Game timer implementation
+- [X] Game timer implementation with winner announcement
+
+## **Phase 1.5: Soccer Visual Polish**
+
+### **Feature 5.1: Soccer Field Design**
+- [ ] Add proper grass texture/pattern to field
+- [ ] Add center circle and center line
+- [ ] Add penalty areas and goal areas
+- [ ] Add sidelines and goal lines
+- [ ] Replace plain green background with soccer field
+
+### **Feature 5.2: Player Sprites & Animation**
+- [ ] Replace circles with big-headed soccer player sprites
+- [ ] Add team jerseys (Blue vs Red)
+- [ ] Add simple kick animation when hitting ball
+- [ ] Player sprites face direction of movement
+
+### **Feature 5.3: Soccer Ball & Goals**
+- [ ] Replace orange circle with soccer ball sprite (black/white pattern)
+- [ ] Make goals look like real soccer goals with nets
+- [ ] Add goal net animation when ball enters
+- [ ] Improve goal post design
+
+### **Feature 5.4: Sound Effects**
+- [ ] Add kick sound when players hit ball
+- [ ] Add goal celebration sound
+- [ ] Add match start/end whistle sounds
+- [ ] Add crowd cheer for goals (optional)
 
 ## **Phase 2: Multiplayer Core**
 
@@ -115,21 +142,22 @@
 - **Feature 2**: Basic Game Canvas - 100% ✅  
 - **Feature 3**: Player Movement System - 100% ✅
 - **Feature 4**: Soccer Ball Physics - 100% ✅
-- **Feature 5**: Local 2-Player Multiplayer - 90% ✅ (missing timer only)
+- **Feature 5**: Local 2-Player Multiplayer - 100% ✅
 
 ### **🎮 WHAT WE HAVE BUILT**
 - **COMPLETE 2-PLAYER SOCCER GAME** with local multiplayer
 - Player 1: Arrow keys + Spacebar | Player 2: WASD + Q key
 - Ball physics with realistic bouncing and drag
 - Goal detection and scoring system that updates in real-time
-- Clean UI with score display
+- **30-second match timer with winner announcement**
+- Clean UI with score display and timer
 - Proper game loop and physics engine
 
 ### **🚀 NEXT PRIORITIES**
-1. **Feature 5**: Complete game timer and start screen
-2. **Feature 6-9**: Add multiplayer (backend, matchmaking, sync)
-3. **Feature 12**: Add AI bot opponent
-4. **Feature 14**: Add sound effects and animations
+1. **Phase 1.5**: Make it look like REAL SOCCER (Features 5.1-5.4)
+2. **Feature 12**: Add AI bot opponent for single-player
+3. **Feature 6-9**: Add online multiplayer (backend, matchmaking, sync)
+4. **Feature 10-11**: Add signup system and post-match experience
 
 ---
 
