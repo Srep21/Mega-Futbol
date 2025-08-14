@@ -24,9 +24,27 @@ export default function GameCanvas() {
                         color: '#ffffff',
                         fontSize: '24px'
                     });
-
                     // Create player at center of field
                     this.player = this.add.circle(400, 200, 20, 0x3b82f6);
+
+                    // Create arrow key controls
+                    this.cursors = this.input.keyboard.createCursorKeys();
+                },
+                update: function() {
+                    // Check which keys are pressed and move player
+                    if (this.cursors.left.isDown) {
+                        this.player.x -= 5; // Move left
+                    }
+                    if (this.cursors.right.isDown) {
+                        this.player.x += 5; // Move right
+                    }
+                    if (this.cursors.up.isDown) {
+                        this.player.y -= 5; // Move up
+                    }
+                    if (this.cursors.down.isDown) {
+                        this.player.y += 5; // Move down
+                    }
+
                 }
             }
         };
