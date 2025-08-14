@@ -38,6 +38,15 @@ export default function GameCanvas() {
                     this.player.body.setBounce(0);
                     this.player.body.setCollideWorldBounds(true);
 
+                    // Create soccer ball
+                    this.ball = this.add.circle(500, 200, 15, 0xff6600); // Orange ball, smaller than player
+                    this.physics.add.existing(this.ball);
+                    this.ball.body.setBounce(0.7); // Ball bounces more than player
+                    this.ball.body.setCollideWorldBounds(true);
+
+                    // Make ball and player collide with each other
+                    this.physics.add.collider(this.player, this.ball);
+
                     // Create arrow key controls
                     this.cursors = this.input.keyboard.createCursorKeys();
                 },
