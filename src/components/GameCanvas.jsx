@@ -32,26 +32,34 @@ export default function GameCanvas() {
                         fontSize: '24px'
                     });
                     
-                    // Create player (simple blue circle)
-                    this.player = this.add.circle(400, 360, 20, 0x3b82f6);
+                    // Create player 1 (blue circle - left side)
+                    this.player = this.add.circle(200, 360, 20, 0x3b82f6);
                     this.physics.add.existing(this.player);
                     this.player.body.setBounce(0);
                     this.player.body.setCollideWorldBounds(true);
 
+                    // Create player 2 (red circle - right side)  
+                    this.player2 = this.add.circle(600, 360, 20, 0xff3333);
+                    this.physics.add.existing(this.player2);
+                    this.player2.body.setBounce(0);
+                    this.player2.body.setCollideWorldBounds(true);
+
                     // Create soccer ball (starts from max height and falls down!)
-                    this.ball = this.add.circle(400, 20, 15, 0xff6600); // Start at very top (Y=20)
+                    this.ball = this.add.circle(400, 20, 15, 0xff6600);
                     this.physics.add.existing(this.ball);
-                    this.ball.body.setBounce(0.8); // SUPER bouncy! (120% bounce back)
+                    this.ball.body.setBounce(0.8);
                     this.ball.body.setCollideWorldBounds(true);
 
-                    // Make ball and player collide with each other
-                    this.physics.add.collider(this.player, this.ball);
-
-                    // Less friction so ball moves more freely
-                    this.ball.body.setDrag(30); // Reduced from 100 to 30
+                    // Add friction to ball so it slows down naturally
+                    this.ball.body.setDrag(30);
 
                     // Make ball lighter so it's easier to move
-                    this.ball.body.setMass(0.2); // Reduced from 0.5 to 0.2
+                    this.ball.body.setMass(0.2);
+
+                    // Make all objects collide with each other
+                    this.physics.add.collider(this.player, this.player2);
+                    this.physics.add.collider(this.player, this.ball);
+                    this.physics.add.collider(this.player2, this.ball);
 
                     // Create simple goal posts
                     // Left Goal Frame (90 pixels tall)
@@ -80,6 +88,9 @@ export default function GameCanvas() {
                     // Create arrow key controls
                     this.cursors = this.input.keyboard.createCursorKeys();
 
+                    // Add WASD controls for player 2
+                    this.wasd = this.input.keyboard.addKeys('W,S,A,D,Q');  
+
                     // Add score display
                     this.scoreText = this.add.text(350, 50, 'Score: 0 - 0', {
                         color: '#ffffff',
@@ -104,6 +115,21 @@ export default function GameCanvas() {
                         this.player.body.setVelocityY(-500);
                     }
 
+                    // Player 2 Controls (WASD)
+                    // Horizontal movement
+                    if (this.wasd.A.isDown) {
+                        this.player2.body.setVelocityX(-200);
+                    } else if (this.wasd.D.isDown) {
+                        this.player2.body.setVelocityX(200);
+                    } else {
+                        this.player2.body.setVelocityX(0);
+                    }
+
+                    // Jumping (only if on ground)
+                    if (this.wasd.W.isDown && this.player2.body.blocked.down) {
+                        this.player2.body.setVelocityY(-500);
+                    }
+
                     // Kicking - press SPACE to kick ball (simple version)
                     if (this.cursors.space.isDown) {
                         // Check if ball is close during kick
@@ -116,21 +142,41 @@ export default function GameCanvas() {
                         }
                     }
 
+                    // Player 2 Kicking - press Q to kick ball
+                    if (this.wasd.Q.isDown) {
+                        // Check if ball is close during kick
+                        let distance2 = Phaser.Math.Distance.Between(this.player2.x, this.player2.y, this.ball.x, this.ball.y);
+                        if (distance2 < 50) {
+                            // Kick the ball with power
+                            let kickX2 = (this.ball.x - this.player2.x) * 12;
+                            let kickY2 = (this.ball.y - this.player2.y) * 12 - 100;
+                            this.ball.body.setVelocity(kickX2, kickY2);
+                        }
+                    }
+
                     // Debug: Show ball position only when near goals
-                    // Goal detection - Left goal (for 90-pixel tall posts)
+                    // Goal detection - Left goal
                     if (this.ball.x < 25 && this.ball.x > 15 && this.ball.y > 310 && this.ball.y < 395) {
                         this.rightScore++;
                         this.scoreText.setText(`Score: ${this.leftScore} - ${this.rightScore}`);
-                        this.ball.setPosition(400, 20); // Ball drops from sky after goal!
+                        this.ball.setPosition(400, 20); // Ball drops from sky
                         this.ball.body.setVelocity(0, 0);
+                        
+                        // Reset players to their sides
+                        this.player.setPosition(200, 360);   // Blue player - left side
+                        this.player2.setPosition(600, 360);  // Red player - right side
                     }
 
-                    // Goal detection - Right goal (for 90-pixel tall posts)
+                    // Goal detection - Right goal
                     if (this.ball.x > 775 && this.ball.x < 785 && this.ball.y > 310 && this.ball.y < 395) {
                         this.leftScore++;
                         this.scoreText.setText(`Score: ${this.leftScore} - ${this.rightScore}`);
-                        this.ball.setPosition(400, 20); // Ball drops from sky after goal!
+                        this.ball.setPosition(400, 20); // Ball drops from sky
                         this.ball.body.setVelocity(0, 0);
+                        
+                        // Reset players to their sides
+                        this.player.setPosition(200, 360);   // Blue player - left side
+                        this.player2.setPosition(600, 360);  // Red player - right side
                     }
                 }
             }

@@ -26,10 +26,12 @@
 - [X] Ball collision with ground and walls
 - [X] Simple ball movement when kicked
 
-### **Feature 5: Basic Game UI**
+### **Feature 5: Local 2-Player Multiplayer**
 - [X] "Play Now" button
-- [ ] Simple game start screen
+- [X] Player 1 controls (Arrow keys + Spacebar)
+- [X] Player 2 controls (WASD + Q key)
 - [X] Basic score display
+- [X] 2-player local multiplayer gameplay
 - [ ] Game timer implementation
 
 ## **Phase 2: Multiplayer Core**
@@ -108,17 +110,18 @@
 
 ## **CURRENT STATUS SUMMARY**
 
-### **✅ COMPLETED (4.5/16 features)**
+### **✅ COMPLETED (5/16 features)**
 - **Feature 1**: Project Setup & Structure - 100% ✅
 - **Feature 2**: Basic Game Canvas - 100% ✅  
 - **Feature 3**: Player Movement System - 100% ✅
 - **Feature 4**: Soccer Ball Physics - 100% ✅
-- **Feature 5**: Basic Game UI - 50% (Play Now button + score display)
+- **Feature 5**: Local 2-Player Multiplayer - 90% ✅ (missing timer only)
 
 ### **🎮 WHAT WE HAVE BUILT**
-- Full working soccer game with player movement, jumping, kicking
+- **COMPLETE 2-PLAYER SOCCER GAME** with local multiplayer
+- Player 1: Arrow keys + Spacebar | Player 2: WASD + Q key
 - Ball physics with realistic bouncing and drag
-- Goal detection and scoring system
+- Goal detection and scoring system that updates in real-time
 - Clean UI with score display
 - Proper game loop and physics engine
 
