@@ -53,6 +53,17 @@ export default function GameCanvas() {
                     // Make ball a bit heavier so it feels more realistic
                     this.ball.body.setMass(0.5);
 
+                    // Create goal posts (from ground up)
+                    // Left goal - two vertical posts and crossbar
+                    this.add.rectangle(20, 330, 10, 140, 0xffffff); // Left post (from ground)
+                    this.add.rectangle(20, 260, 10, 140, 0xffffff); // Right post (from ground)  
+                    this.add.rectangle(20, 190, 10, 10, 0xffffff);  // Crossbar (top)
+
+                    // Right goal - two vertical posts and crossbar
+                    this.add.rectangle(780, 330, 10, 140, 0xffffff); // Left post (from ground)
+                    this.add.rectangle(780, 260, 10, 140, 0xffffff); // Right post (from ground)
+                    this.add.rectangle(780, 190, 10, 10, 0xffffff);  // Crossbar (top)
+                    
                     // Create arrow key controls
                     this.cursors = this.input.keyboard.createCursorKeys();
                 },
