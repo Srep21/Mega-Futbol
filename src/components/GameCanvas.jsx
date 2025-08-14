@@ -17,6 +17,13 @@ export default function GameCanvas() {
             height: 400,
             parent: 'phaser-game',
             backgroundColor: '#2e7d32',
+            physics : {
+                default: 'arcade', 
+                arcade: {
+                    gravity: { y: 800}, 
+                    debug: false
+                }
+            },
             scene: {
                 create: function() {
                     // Add field title 
@@ -24,43 +31,29 @@ export default function GameCanvas() {
                         color: '#ffffff',
                         fontSize: '24px'
                     });
+                    
                     // Create player at center of field
                     this.player = this.add.circle(400, 200, 20, 0x3b82f6);
+                    this.physics.add.existing(this.player);
+                    this.player.body.setBounce(0);
+                    this.player.body.setCollideWorldBounds(true);
 
                     // Create arrow key controls
                     this.cursors = this.input.keyboard.createCursorKeys();
                 },
                 update: function() {
-                    // Check which keys are pressed and move player
+                    // Horizontal movement
                     if (this.cursors.left.isDown) {
-                        this.player.x -= 5; // Move left
+                        this.player.body.setVelocityX(-200);
+                    } else if (this.cursors.right.isDown) {
+                        this.player.body.setVelocityX(200);
+                    } else {
+                        this.player.body.setVelocityX(0);
                     }
-                    if (this.cursors.right.isDown) {
-                        this.player.x += 5; // Move right
-                    }
-                    if (this.cursors.up.isDown) {
-                        this.player.y -= 5; // Move up
-                    }
-                    if (this.cursors.down.isDown) {
-                        this.player.y += 5; // Move down
-                    }
-
-                    // Keep player inside field boundaries
-                    // Left boundary (player radius = 20)
-                    if (this.player.x < 20) {
-                        this.player.x = 20;
-                    }
-                    // Right boundary (field width = 800, minus player radius)
-                    if (this.player.x > 780) {
-                        this.player.x = 780;
-                    }
-                    // Top boundary
-                    if (this.player.y < 20) {
-                        this.player.y = 20;
-                    }
-                    // Bottom boundary (field height = 400, minus player radius)
-                    if (this.player.y > 380) {
-                        this.player.y = 380;
+                    
+                    // Jumping (only if on ground)
+                    if (this.cursors.up.isDown && this.player.body.blocked.down) {
+                        this.player.body.setVelocityY(-500);
                     }
                 }
             }
