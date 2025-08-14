@@ -15,10 +15,10 @@
 - [X] Add simple background and field
 
 ### **Feature 3: Player Movement System**
-- [ ] Create player sprite with big-headed character
-- [ ] Implement arrow key movement controls
-- [ ] Add jumping mechanics
-- [ ] Basic collision detection with ground
+- [X] Create player sprite with big-headed character
+- [X] Implement arrow key movement controls
+- [X] Add jumping mechanics
+- [X] Basic collision detection with ground
 
 ### **Feature 4: Soccer Ball Physics**
 - [ ] Create ball sprite
