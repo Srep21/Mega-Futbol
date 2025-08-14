@@ -47,6 +47,12 @@ export default function GameCanvas() {
                     // Make ball and player collide with each other
                     this.physics.add.collider(this.player, this.ball);
 
+                    // Add friction to ball so it slows down naturally
+                    this.ball.body.setDrag(100);
+
+                    // Make ball a bit heavier so it feels more realistic
+                    this.ball.body.setMass(0.5);
+
                     // Create arrow key controls
                     this.cursors = this.input.keyboard.createCursorKeys();
                 },
@@ -63,6 +69,21 @@ export default function GameCanvas() {
                     // Jumping (only if on ground)
                     if (this.cursors.up.isDown && this.player.body.blocked.down) {
                         this.player.body.setVelocityY(-500);
+                    }
+
+                    // Kicking - press SPACE to kick the ball
+                    if (this.cursors.space.isDown) {
+                        // Check if ball is close to player
+                        let distance = Phaser.Math.Distance.Between(this.player.x, this.player.y, this.ball.x, this.ball.y);
+                        if (distance < 50) {
+                            // Calculate kick direction (from player to ball)
+                            let kickX = (this.ball.x - this.player.x) * 10;
+                            let kickY = (this.ball.y - this.player.y) * 10;
+
+                            // Kick the ball!
+                            this.ball.body.setVelocity(kickX, kickY);
+                        
+                        }
                     }
                 }
             }
