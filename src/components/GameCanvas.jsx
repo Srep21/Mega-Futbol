@@ -31,6 +31,8 @@ export default function GameCanvas() {
                         color: '#ffffff',
                         fontSize: '24px'
                     });
+
+                    
                     
                     // Create player 1 (blue circle - left side)
                     this.player = this.add.circle(200, 360, 20, 0x3b82f6);
@@ -99,8 +101,51 @@ export default function GameCanvas() {
                     this.leftScore = 0;
                     this.rightScore = 0;
                     this.spaceWasPressed = false;
+
+                    this.matchTime = 30; // 30 seconds
+                    this.timerText = this.add.text(350, 20, 'Time: 0:30', {
+                        color: '#ffffff',
+                        fontSize: '18px'
+                    });
+                    this.matchEnded = false;
+
                 },
                 update: function() {
+                    // Timer countdown logic
+                    if (!this.matchEnded && this.matchTime > 0) {
+                        // Decrease timer by 1/60th of a second each frame (60 FPS)
+                        this.matchTime -= 1/60;
+                        
+                        // Update timer display every frame
+                        let minutes = Math.floor(this.matchTime / 60);
+                        let seconds = Math.floor(this.matchTime % 60);
+                        this.timerText.setText(`Time: ${minutes}:${seconds.toString().padStart(2, '0')}`);
+                        
+                        // Check if match ended
+                        if (this.matchTime <= 0) {
+                            this.matchEnded = true;
+                            
+                            // Determine winner
+                            let winnerText = '';
+                            if (this.leftScore > this.rightScore) {
+                                winnerText = 'BLUE PLAYER WINS!';
+                            } else if (this.rightScore > this.leftScore) {
+                                winnerText = 'RED PLAYER WINS!';
+                            } else {
+                                winnerText = "IT'S A TIE!";
+                            }
+                            
+                            this.timerText.setText(`Time: 0:00 - ${winnerText}`);
+                            // Stop all movement when match ends
+                            this.player.body.setVelocity(0, 0);
+                            this.player2.body.setVelocity(0, 0);
+                            this.ball.body.setVelocity(0, 0);
+                        }
+                    }
+
+                    // Skip player controls if match ended
+                    if (this.matchEnded) return;
+
                     // Horizontal movement
                     if (this.cursors.left.isDown) {
                         this.player.body.setVelocityX(-200);
