@@ -9,10 +9,10 @@
 - [x] Configure build tools and dev server
 
 ### **Feature 2: Basic Game Canvas**
-- [ ] Create Phaser.js game instance
-- [ ] Set up game world and camera
-- [ ] Implement basic game loop
-- [ ] Add simple background and field
+- [X] Create Phaser.js game instance
+- [X] Set up game world and camera
+- [X] Implement basic game loop
+- [X] Add simple background and field
 
 ### **Feature 3: Player Movement System**
 - [ ] Create player sprite with big-headed character
