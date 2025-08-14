@@ -45,6 +45,23 @@ export default function GameCanvas() {
                         this.player.y += 5; // Move down
                     }
 
+                    // Keep player inside field boundaries
+                    // Left boundary (player radius = 20)
+                    if (this.player.x < 20) {
+                        this.player.x = 20;
+                    }
+                    // Right boundary (field width = 800, minus player radius)
+                    if (this.player.x > 780) {
+                        this.player.x = 780;
+                    }
+                    // Top boundary
+                    if (this.player.y < 20) {
+                        this.player.y = 20;
+                    }
+                    // Bottom boundary (field height = 400, minus player radius)
+                    if (this.player.y > 380) {
+                        this.player.y = 380;
+                    }
                 }
             }
         };
