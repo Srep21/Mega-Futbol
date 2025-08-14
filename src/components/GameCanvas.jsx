@@ -63,9 +63,17 @@ export default function GameCanvas() {
                     this.add.rectangle(780, 330, 10, 140, 0xffffff); // Left post (from ground)
                     this.add.rectangle(780, 260, 10, 140, 0xffffff); // Right post (from ground)
                     this.add.rectangle(780, 190, 10, 10, 0xffffff);  // Crossbar (top)
-                    
+
                     // Create arrow key controls
                     this.cursors = this.input.keyboard.createCursorKeys();
+
+                    // Add score display
+                    this.scoreText = this.add.text(350, 50, 'Score: 0 - 0', {
+                        color: '#ffffff',
+                        fontSize: '20px'
+                    });
+                    this.leftScore = 0;
+                    this.rightScore = 0;
                 },
                 update: function() {
                     // Horizontal movement
@@ -93,7 +101,36 @@ export default function GameCanvas() {
 
                             // Kick the ball!
                             this.ball.body.setVelocity(kickX, kickY);
-                        
+                        }
+                    }
+
+                    // Debug: Show ball position only when near goals
+                    // Debug: Show ball position only when near goals
+                    if (this.ball.x < 50 || this.ball.x > 750) {
+                        console.log("Ball near goal! Position:", this.ball.x.toFixed(0), this.ball.y.toFixed(0));
+                    }
+
+                    // Goal detection - Left goal (expanded Y range)
+                    if (this.ball.x < 50) {
+                        console.log("Ball in LEFT goal area! Y =", this.ball.y.toFixed(0));
+                        if (this.ball.y > 180 && this.ball.y < 400) {  // Much wider Y range
+                            this.rightScore++;
+                            this.scoreText.setText(`Score: ${this.leftScore} - ${this.rightScore}`);
+                            console.log("GOAL! Right player scores!");
+                            this.ball.setPosition(400, 200);
+                            this.ball.body.setVelocity(0, 0);
+                        }
+                    }
+
+                    // Goal detection - Right goal (expanded Y range)
+                    if (this.ball.x > 750) {
+                        console.log("Ball in RIGHT goal area! Y =", this.ball.y.toFixed(0));
+                        if (this.ball.y > 180 && this.ball.y < 400) {  // Much wider Y range
+                            this.leftScore++;
+                            this.scoreText.setText(`Score: ${this.leftScore} - ${this.rightScore}`);
+                            console.log("GOAL! Left player scores!");
+                            this.ball.setPosition(400, 200);
+                            this.ball.body.setVelocity(0, 0);
                         }
                     }
                 }
