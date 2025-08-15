@@ -46,6 +46,11 @@ export default function GameCanvas() {
                     this.player2.body.setBounce(0);
                     this.player2.body.setCollideWorldBounds(true);
 
+                    // Add AI variables after the player variables
+                    this.aiMode = 'chase'; // 'chase', 'attack', 'defend', 'return'
+                    this.aiTargetX = 400; // AI's target position
+                    this.aiTargetY = 360; // AI's target position
+
                     // Create soccer ball (starts from max height and falls down!)
                     this.ball = this.add.circle(400, 20, 15, 0xff6600);
                     this.physics.add.existing(this.ball);
@@ -160,19 +165,92 @@ export default function GameCanvas() {
                         this.player.body.setVelocityY(-500);
                     }
 
-                    // Player 2 Controls (WASD)
-                    // Horizontal movement
-                    if (this.wasd.A.isDown) {
-                        this.player2.body.setVelocityX(-200);
-                    } else if (this.wasd.D.isDown) {
-                        this.player2.body.setVelocityX(200);
+                    // Player 2 Controls (WASD) - REPLACE THIS ENTIRE SECTION WITH:
+                    // AI Logic for Player 2 - NIGHTMARE DIFFICULTY
+                    let ballDistance = Phaser.Math.Distance.Between(this.player2.x, this.player2.y, this.ball.x, this.ball.y);
+                    let playerDistance = Phaser.Math.Distance.Between(this.player2.x, this.player2.y, this.player.x, this.player.y);
+
+                    // Advanced AI Decision Making
+                    if (this.ball.x > 400) {
+                        // Ball on AI's side - ATTACK MODE
+                        if (ballDistance < 120) { // Increased detection range
+                            // Very close to ball - aggressive attack
+                            this.aiMode = 'attack';
+                            this.aiTargetX = this.ball.x;
+                            this.aiTargetY = this.ball.y;
+                        } else if (this.ball.x > 500) {
+                            // Ball deep in AI territory - chase and clear
+                            this.aiMode = 'chase';
+                            this.aiTargetX = this.ball.x;
+                            this.aiTargetY = this.ball.y;
+                        } else {
+                            // Ball in midfield - strategic positioning
+                            this.aiMode = 'position';
+                            this.aiTargetX = this.ball.x - 30;
+                            this.aiTargetY = 360;
+                        }
+                    } else {
+                        // Ball on player's side - DEFENSE MODE
+                        if (this.ball.x < 300) {
+                            // Ball very close to player's goal - rush defense
+                            this.aiMode = 'rush_defense';
+                            this.aiTargetX = this.ball.x + 50;
+                            this.aiTargetY = this.ball.y;
+                        } else {
+                            // Ball in midfield - strategic defense
+                            this.aiMode = 'defend';
+                            this.aiTargetX = 500;
+                            this.aiTargetY = 360;
+                        }
+                    }
+
+                    // AI Movement with NIGHTMARE speeds
+                    let moveSpeed = 400; // NIGHTMARE base speed
+                    if (this.aiMode === 'attack' || this.aiMode === 'rush_defense') {
+                        moveSpeed = 450; // Super fast for critical situations
+                    } else if (this.aiMode === 'defend') {
+                        moveSpeed = 380; // Slightly slower for positioning
+                    }
+
+                    // AI Movement Logic
+                    if (this.aiTargetX > this.player2.x + 15) {
+                        this.player2.body.setVelocityX(moveSpeed);
+                    } else if (this.aiTargetX < this.player2.x - 15) {
+                        this.player2.body.setVelocityX(-moveSpeed);
                     } else {
                         this.player2.body.setVelocityX(0);
                     }
 
-                    // Jumping (only if on ground)
-                    if (this.wasd.W.isDown && this.player2.body.blocked.down) {
-                        this.player2.body.setVelocityY(-500);
+                    // AI Jumping - NIGHTMARE jumping power
+                    if (this.ball.y < this.player2.y - 25 && this.player2.body.blocked.down) {
+                        // Jump higher and more aggressively
+                        this.player2.body.setVelocityY(-700); // NIGHTMARE jump power
+                    } else if (this.ball.y < this.player2.y - 10 && this.player2.body.blocked.down && this.aiMode === 'attack') {
+                        // Small jump for close balls
+                        this.player2.body.setVelocityY(-400);
+                    }
+
+                    // AI Kicking - NIGHTMARE power and accuracy
+                    if (ballDistance < 45 && this.ball.x > 400) {
+                        // Kick towards opponent's goal with NIGHTMARE power
+                        let kickX = (this.ball.x - this.player2.x) * 25; // NIGHTMARE kick power
+                        let kickY = (this.ball.y - this.player2.y) * 25 - 150; // NIGHTMARE kick height
+                        this.ball.body.setVelocity(kickX, kickY);
+                    } else if (ballDistance < 60 && this.ball.x < 400 && this.aiMode === 'rush_defense') {
+                        // Defensive kick to clear the ball
+                        let clearX = (this.ball.x - this.player2.x) * 20; // Stronger defensive kicks
+                        let clearY = (this.ball.y - this.player2.y) * 20 - 80;
+                        this.ball.body.setVelocity(clearX, clearY);
+                    }
+
+                    // AI Strategic Positioning - Stay in good defensive position
+                    if (this.aiMode === 'defend' && this.ball.x < 400) {
+                        // Move to intercept potential passes
+                        if (this.ball.y > 200 && this.ball.y < 300) {
+                            this.aiTargetY = this.ball.y;
+                        } else {
+                            this.aiTargetY = 360; // Return to ground level
+                        }
                     }
 
                     // Kicking - press SPACE to kick ball (simple version)
