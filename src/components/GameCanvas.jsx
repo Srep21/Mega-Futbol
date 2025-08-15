@@ -40,11 +40,20 @@ export default function GameCanvas() {
                     this.player.body.setBounce(0);
                     this.player.body.setCollideWorldBounds(true);
 
-                    // Create player 2 (red circle - right side)  
+                    // Create player 2 (soccer player - right side)  
                     this.player2 = this.add.circle(600, 360, 20, 0xff3333);
                     this.physics.add.existing(this.player2);
                     this.player2.body.setBounce(0);
                     this.player2.body.setCollideWorldBounds(true);
+
+                    // Add soccer player details to the circle
+                    // Add a small "10" number (like a jersey number)
+                    let player2Number = this.add.text(600, 360, '10', {
+                        color: '#FFFFFF',
+                        fontSize: '14px',
+                        fontStyle: 'bold'
+                    });
+                    player2Number.setOrigin(0.5);
 
                     // Add AI variables after the player variables
                     this.aiMode = 'chase'; // 'chase', 'attack', 'defend', 'return'
